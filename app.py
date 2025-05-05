@@ -57,7 +57,17 @@ bar_fig.update_layout(
 )
 st.plotly_chart(bar_fig, use_container_width=True)
 
-# --- 7. Treemap (Distribution of Admin4 Areas by Province) ---
+# --- 7. Pie Chart (Distribution of Admin4 Areas by Province) ---
+st.subheader("🥧 Distribution of Admin4 Areas (Pie Chart)")
+pie_fig = px.pie(
+    admin4_counts,
+    names='Province',
+    values='Admin4_Count',
+    title='Distribution of Admin4 Areas per Province'
+)
+st.plotly_chart(pie_fig, use_container_width=True)
+
+# --- 8. Treemap (Distribution of Admin4 Areas by Province) ---
 st.subheader("🌲 Treemap of Admin4 Areas by Province")
 treemap_fig = px.treemap(
     admin4_counts,  # Use admin4_counts for the Treemap
@@ -67,7 +77,7 @@ treemap_fig = px.treemap(
 )
 st.plotly_chart(treemap_fig, use_container_width=True)
 
-# --- 8. Bubble Chart (Top 50 Districts by Simulated Area) ---
+# --- 9. Bubble Chart (Top 50 Districts by Simulated Area) ---
 st.subheader("💥 Districts Bubble Chart (Top 50 by Simulated Area)")
 if 'Admin4_Name_En' in admin4_df.columns:
     np.random.seed(42)
@@ -97,7 +107,7 @@ if 'Admin4_Name_En' in admin4_df.columns:
 else:
     st.warning("⚠️ 'Admin4_Name_En' column not found for the Bubble Chart.")
 
-# --- 9. Scatter Plot of Simulated Area vs Population by District ---
+# --- 10. Scatter Plot of Simulated Area vs Population by District ---
 st.subheader("📍 Scatter Plot of Simulated Area vs Population by District")
 
 # Generate Simulated Population if not already present
@@ -120,7 +130,7 @@ scatter_fig = px.scatter(
 scatter_fig.update_layout(height=600, showlegend=False)
 st.plotly_chart(scatter_fig, use_container_width=True)
 
-# --- 10. Line Chart (dummy growth example) ---
+# --- 11. Line Chart (dummy growth example) ---
 st.subheader("📈 Dummy Line Chart Example")
 line_data = pd.DataFrame({
     'Year': list(range(2015, 2026)),
@@ -134,3 +144,19 @@ line_fig = px.line(
     markers=True
 )
 st.plotly_chart(line_fig, use_container_width=True)
+
+# --- 12. Treemap of Administrative Hierarchy ---
+st.subheader("🧱 Treemap of Administrative Hierarchy")
+
+# Ensure the required columns exist
+if 'Admin1_Name_En' in admin4_df.columns and 'Admin3_Name_En' in admin4_df.columns and 'Admin4_Name_En' in admin4_df.columns:
+    treemap_fig = px.treemap(
+        admin4_df,
+        path=['Admin1_Name_En', 'Admin3_Name_En', 'Admin4_Name_En'],
+        title='Treemap: Province > District > Admin4 Area',
+        color='Admin1_Name_En',
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
+    st.plotly_chart(treemap_fig, use_container_width=True)
+else:
+    st.warning("⚠️ Some required columns ('Admin1_Name_En', 'Admin3_Name_En', 'Admin4_Name_En') are missing for the Treemap.")
