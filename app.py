@@ -103,5 +103,28 @@ if file_exists:
             xaxis_title='Simulated Area',
             height=700
         )
-        st.plotly_chart(bubble_fig, use_container_width=True)
+        st.plotly_chart(bubble_fig, use_container_width=True) # --- 7. Scatter Plot using District as Color ---
+    st.subheader("📍 Scatter Plot of Simulated Area vs Population by District")
+
+    if 'Simulated_Population' not in admin4_df.columns:
+        admin4_df['Simulated_Population'] = np.random.randint(1000, 100000, size=len(admin4_df))
+
+    scatter_fig = px.scatter(
+        admin4_df,
+        x='Simulated_Area',
+        y='Simulated_Population',
+        color='Admin4_Name_En',  # Coloring by district
+        hover_name='Admin4_Name_En',
+        title='Simulated Area vs Population Colored by District',
+        size='Simulated_Population',
+        labels={
+            'Simulated_Area': 'Simulated Area (km²)',
+            'Simulated_Population': 'Simulated Population'
+        }
+    )
+    scatter_fig.update_layout(height=600, showlegend=False)
+    st.plotly_chart(scatter_fig, use_container_width=True)
+
+else:
+    st.error(f"❌ File not found at:\n{file_path}")
    
