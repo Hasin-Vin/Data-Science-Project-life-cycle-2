@@ -1,3 +1,1 @@
-streamlit
-pandas
-plotly==5.19.0
+
