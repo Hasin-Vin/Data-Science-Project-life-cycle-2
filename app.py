@@ -124,7 +124,30 @@ if file_exists:
     )
     scatter_fig.update_layout(height=600, showlegend=False)
     st.plotly_chart(scatter_fig, use_container_width=True)
-
-else:
-    st.error(f"❌ File not found at:\n{file_path}")
    
+st.subheader("🧱 Treemap of Administrative Hierarchy")
+
+treemap_fig = px.treemap(
+    admin4_df,
+    path=['Admin1_Name_En', 'Admin3_Name_En', 'Admin4_Name_En'],
+    title='Treemap: Province > District > Admin4 Area',
+    color='Admin1_Name_En',
+    color_discrete_sequence=px.colors.qualitative.Pastel
+)
+st.plotly_chart(treemap_fig, use_container_width=True)
+
+   
+# --- 5. Line Chart (dummy growth example) ---
+st.subheader("📈 Dummy Line Chart Example")
+line_data = pd.DataFrame({
+        'Year': list(range(2015, 2026)),
+        'Admin4_Count': np.random.randint(50, 100, size=11)
+    })
+line_fig = px.line(
+        line_data,
+        x='Year',
+        y='Admin4_Count',
+        title='Dummy Admin4 Growth Over Time',
+        markers=True
+    )
+st.plotly_chart(line_fig, use_container_width=True)
